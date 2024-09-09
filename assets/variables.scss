@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'Minecraft';
+  src: url('~@/assets/fonts/Minecraft/Minecraftia-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+$font-size-root: 16px; // Ajusta el tamaño base del texto
+
+$body-font-family: 'Minecraft', sans-serif;
+
+.text-center {
+  text-align: center;
+}
+
+.minecraft-font {
+  font-family: 'Minecraft', sans-serif;
+  font-size: $font-size-root; // Asegúrate de que el tamaño de fuente base esté configurado
+}
