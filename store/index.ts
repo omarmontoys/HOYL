@@ -5,8 +5,7 @@ export const store = new Vuex.Store<RootState>({
   actions: {
     nuxtServerInit: () => {},
   },
-  modules: {
-
+  modules: {    
   },
 });
 const createStore = (): Store<RootState> => {

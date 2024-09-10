@@ -12,7 +12,7 @@
                 >
                   HOYL
                 </h3>
-                </br>
+                <br /> <!-- Etiqueta corregida -->
                 <h5
                   class="text-center minecraft-font"
                   style="color: rgba(198, 125, 77, 1); font-size: 24px;"
@@ -23,14 +23,16 @@
               <v-card-text>
                 <v-form ref="form">
                   <v-text-field
-                    class="minecraft-font small-text" 
-                    outlined
                     label="Correo eléctronico"
+                    clearable
                     prepend-inner-icon="mdi-email"
-                  ></v-text-field>
+                     
+                    outlined
+                   ></v-text-field>
                   <v-text-field
-                    class="minecraft-font small-text" 
-                    label="Contraseña"
+                   label="Contraseña"
+                    prepend-inner-icon="mdi-lock"
+                    clearable
                     filled
                     outlined
                   ></v-text-field>
@@ -57,9 +59,15 @@
   </v-container>
 </template>
 
+
 <script lang="ts">
 import Vue from "vue";
-
+import Component from "vue-class-component";
+@Component({
+  layout(context) {
+    return "default";
+  },
+})
 export default class Login extends Vue {
 
 }
@@ -70,9 +78,7 @@ export default class Login extends Vue {
   font-family: 'Minecraft', sans-serif;
 }
 
-.small-text {
-  font-size: 12px;
-}
+
 
 .v-card {
   background: rgba(255, 255, 255, 0.468) !important;

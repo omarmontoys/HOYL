@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center">
-      <v-col class="pt-0 pb-2 minecraft-font" xl="8" md="10" lg="10" sm="10" xs="12">
+      <v-col class="pt-0 pb-2" xl="8" md="10" lg="10" sm="10" xs="12">
         <v-card class="elevation-2 pa-4" rounded="lg minecraft-font">
           <v-card-subtitle class="v-card-subtitle">
             <h3
@@ -32,7 +32,6 @@
                       v-bind="attrs"
                       v-on="on"
                       dense
-                      class="minecraft-font small-text"
                     ></v-text-field>
                   </template>
                   <v-date-picker v-model="startDate" no-title scrollable @input="menu1 = false"></v-date-picker>
@@ -56,7 +55,7 @@
                       v-bind="attrs"
                       v-on="on"
                       dense
-                      class="minecraft-font small-text"
+
                     ></v-text-field>
                   </template>
                   <v-date-picker v-model="endDate" no-title scrollable @input="menu2 = false"></v-date-picker>
@@ -70,14 +69,14 @@
                   single-line
                   hide-details
                   dense
-                  class="minecraft-font search-field small-text"
+                  class="search-field"
                 ></v-text-field>
               </v-col>
             </v-row>
             <v-data-table
               :headers="headers"
               :items="filteredDesserts"
-              class="minecraft-font"
+
               item-value="name"
               v-model="selectedItems"
               item-key="name"
@@ -214,9 +213,5 @@ export default class Principal extends Vue {
 
 .search-field {
   width: 100%;
-}
-
-.small-text {
-  font-size: 12.5px;
 }
 </style>

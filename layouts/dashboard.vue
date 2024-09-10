@@ -10,7 +10,7 @@
 
         <v-spacer></v-spacer>
      
-        <v-btn icon  to="../">
+        <v-btn icon  to="/">
           <v-icon>mdi-exit-to-app</v-icon>
         </v-btn>
       </v-app-bar>
