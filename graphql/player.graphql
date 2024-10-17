@@ -1,0 +1,15 @@
+query Player($id: ID!){
+  player(id: $id) {
+    id
+    name
+    age
+    username
+    appearance
+    answers {
+      id
+      question
+      answer
+      playerId
+    }
+  }
+}

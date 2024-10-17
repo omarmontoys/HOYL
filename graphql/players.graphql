@@ -1,0 +1,12 @@
+query Players{
+     players{
+        id
+        username
+        answers{
+            id
+            question
+            answer
+            playerId
+        }
+    }
+}

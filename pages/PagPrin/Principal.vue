@@ -8,7 +8,7 @@
               class="text-center minecraft-font"
               style="color: rgba(184, 116, 72, 1); font-size: 32px;"
             >
-              Listado de Partidas
+              Listado de Jugadores
             </h3>
           </v-card-subtitle>
           <v-card-text>
@@ -55,7 +55,6 @@
                       v-bind="attrs"
                       v-on="on"
                       dense
-
                     ></v-text-field>
                   </template>
                   <v-date-picker v-model="endDate" no-title scrollable @input="menu2 = false"></v-date-picker>
@@ -75,11 +74,10 @@
             </v-row>
             <v-data-table
               :headers="headers"
-              :items="filteredDesserts"
-
-              item-value="name"
+              :items="filteredPlayers"
+              item-value="username"
               v-model="selectedItems"
-              item-key="name"
+              item-key="id"
             >
               <template v-slot:header.checkbox>
                 <v-checkbox
@@ -123,6 +121,13 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { namespace } from "vuex-class/lib/bindings";
+import { Player } from "~/gql/graphql";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { saveAs } from "file-saver";
+
+const UserModule = namespace("UserModule");
 
 @Component({
   layout(context) {
@@ -130,77 +135,114 @@ import { Component, Vue } from "vue-property-decorator";
   },
 })
 export default class Principal extends Vue {
-  public desserts = [
-    { name: 'Jesus', calories: 1, fat: "12:42 PM 05/14/2024", glutenfree: false },
-    { name: 'Francisco', calories: 2, fat: "12:42 PM 05/14/2024", glutenfree: true },
-    { name: 'Hector', calories: 1, fat: "12:42 PM 05/14/2024", glutenfree: false }
-  ];
-
-  public headers = [
-    { text: 'Nombre', value: 'name' },
-    { text: 'Partida', value: 'calories' },
-    { text: 'Fecha de Creacion', value: 'fat' },
-    { text: 'Select', value: 'checkbox' }
-  ];
-
   public selectedItems: any[] = [];
-  public search: string = '';
+  public search: string = "";
   public startDate: string | null = null;
   public endDate: string | null = null;
   public menu1 = false;
   public menu2 = false;
 
+  @UserModule.State("players")
+  private players!: Player[];
+
+  @UserModule.Action
+  fetchPlayers!: () => Promise<void>;
+
+  public headers = [
+    { text: "Nombre", value: "username" },
+    { text: "Partida", value: "calories" },
+    { text: "Fecha de Creacion", value: "fat" },
+    { text: "Select", value: "checkbox" },
+  ];
+
   get allSelected() {
-    return this.selectedItems.length === this.desserts.length;
+    return this.selectedItems.length === this.filteredPlayers.length;
   }
 
-  get filteredDesserts() {
+  get filteredPlayers() {
     const searchLower = this.search.toLowerCase();
-
-    return this.desserts.filter((dessert) => {
-      const nameMatch = dessert.name.toLowerCase().includes(searchLower);
-      const dateMatch = this.dateInRange(dessert.fat);
-      return nameMatch && dateMatch;
-    });
+    return (this.players || [])
+      .filter((player) => player.username.toLowerCase().includes(searchLower))
+      .sort((a, b) => parseInt(a.id) - parseInt(b.id));
   }
-  dateInRange(dateString: string) {
-    const dessertDate = new Date(dateString);
-    const start = this.startDate ? new Date(this.startDate) : null;
-    const end = this.endDate ? new Date(this.endDate) : null;
 
-    if (start && end) {
-      return dessertDate >= start && dessertDate <= end;
-    } else if (start) {
-      return dessertDate >= start;
-    } else if (end) {
-      return dessertDate <= end;
-    }
-    return true;
-  }
   toggleSelectAll() {
     if (this.allSelected) {
       this.selectedItems = [];
     } else {
-      this.selectedItems = [...this.desserts];
+      this.selectedItems = [...this.filteredPlayers];
     }
   }
 
   exportPDF() {
+    const doc = new jsPDF({
+      orientation: "landscape", // Orientación horizontal
+      unit: "mm",
+      format: "a4",
+    });
 
-    console.log("Exportar PDF");
+    const img = new Image();
+    img.src = "/Logo.png";
+
+    img.onload = () => {
+      // Agregar imagen al PDF
+      doc.addImage(img, "PNG", 10, 10, 40, 30);
+      
+      // Información adicional del reporte
+      doc.setFontSize(12);
+      doc.text('Fecha: día/mes/año', 120, 35);
+      doc.text('HOYL', 180, 35);
+      doc.text('Usuario(s) seleccionados: Todos', 16, 50);
+      doc.text(`Fecha: ${this.startDate || "N/A"} ---- ${this.endDate || "N/A"}`, 14, 40);
+      
+      // Añadir tabla con datos
+      const headers = [
+        ["Usuario", "Edad", ...Array.from({ length: 27 }, (_, i) => `P ${i + 1}`), "Total"],
+      ];
+
+      const rows = this.players.map((player) => {
+        const answers = player.answers.map((a) => a.answer);
+        const total = answers.reduce((acc, val) => acc + val, 0);
+        return [player.username, `${player.age} años`, ...answers, total];
+      });
+
+      autoTable(doc, {
+        head: headers,
+        body: rows,
+        startY: 60, // Posición de inicio de la tabla
+        theme: "grid",
+      });
+
+      // Guardar el PDF
+      doc.save("jugadores.pdf");
+    };
+
+    img.onerror = (err) => {
+      console.error("Error al cargar la imagen:", err);
+    };
   }
 
   exportCSV() {
+    let csvContent = "ID,Nombre\n";
+    this.selectedItems.forEach((player) => {
+      csvContent += `"${player.id}","${player.username}"\n`;
+    });
 
-    console.log("Exportar CSV");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "jugadores_seleccionados.csv");
   }
 
   deleteSelected() {
-    this.desserts = this.desserts.filter(item => !this.selectedItems.includes(item));
+    this.players = this.players.filter((player) => !this.selectedItems.includes(player));
     this.selectedItems = [];
+  }
+
+  async mounted() {
+    await this.fetchPlayers();
   }
 }
 </script>
+
 
 <style scoped lang="scss">
 .minecraft-font {
