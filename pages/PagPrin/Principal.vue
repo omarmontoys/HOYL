@@ -184,16 +184,23 @@ export default class Principal extends Vue {
     const img = new Image();
     img.src = "/Logo.png";
 
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
     img.onload = () => {
       // Agregar imagen al PDF
-      doc.addImage(img, "PNG", 10, 10, 40, 30);
+      doc.addImage(img, "PNG", 85, 10, 130, 35);
       
       // Información adicional del reporte
       doc.setFontSize(12);
-      doc.text('Fecha: día/mes/año', 120, 35);
-      doc.text('HOYL', 180, 35);
+      doc.text(`Fecha: ${formattedDate}`, 16, 40);
+      doc.text('HOYL', 250, 40);
       doc.text('Usuario(s) seleccionados: Todos', 16, 50);
-      doc.text(`Fecha: ${this.startDate || "N/A"} ---- ${this.endDate || "N/A"}`, 14, 40);
+      doc.text(`Fecha: ${this.startDate || "N/A"} ---- ${this.endDate || "N/A"}`, 16, 45);
       
       // Añadir tabla con datos
       const headers = [
@@ -214,7 +221,7 @@ export default class Principal extends Vue {
       });
 
       // Guardar el PDF
-      doc.save("jugadores.pdf");
+      doc.save(`ResultadosJuegos_${formattedDate}.pdf`);
     };
 
     img.onerror = (err) => {
@@ -223,13 +230,34 @@ export default class Principal extends Vue {
   }
 
   exportCSV() {
-    let csvContent = "ID,Nombre\n";
-    this.selectedItems.forEach((player) => {
-      csvContent += `"${player.id}","${player.username}"\n`;
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
     });
+    // Definir los encabezados
+    let csvContent = "Usuario,Edad," + 
+      Array.from({ length: 27 }, (_, i) => `P${i + 1}`).join(",") + 
+      ",Total\n";
 
+    // Rellenar las filas con datos
+    this.selectedItems.forEach((player: Player) => {
+    const answers: number[] = player.answers.map((a: { answer: number }) => a.answer); // Respuestas del jugador
+    const total: number = answers.reduce((acc: number, val: number) => acc + val, 0); // Calcular el total
+    const row = [
+      player.username,
+      `${player.age} años`,
+      ...answers,
+      total
+    ].join(","); // Formatear la fila como CSV
+
+    csvContent += row + "\n"; // Agregar fila al contenido CSV
+  });
+
+    // Crear y descargar el archivo CSV
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, "jugadores_seleccionados.csv");
+    saveAs(blob, `ResultadosJuegos_${formattedDate}.csv`);
   }
 
   deleteSelected() {
