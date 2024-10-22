@@ -16,11 +16,14 @@ class UserService {
       })
     ).data.players;
   }
-  async getplayer() {
+  async getplayer(playerId: string) {
     return (
       await apolloClient.query({
         query: Player,
         fetchPolicy: "network-only",
+        variables: {
+          id : playerId
+        }
       })
     ).data.player;
   }

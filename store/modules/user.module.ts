@@ -20,7 +20,29 @@ class UserModule extends VuexModule {
     public loadingdelete = false;
     public successdelete = false;
     public loadingPlayersStatus = false;
+    public loadingPlayerStatus = false;
 
+    @Action
+    async getPlayer(playerId: string) {
+        this.context.commit("loadingPlayer", true);
+        return await UserService.getplayer(playerId)
+            .then((data) => {
+                console.log(data);
+                this.context.commit("playerSuccess", data);
+                this.context.commit("loadingPlayer", false);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    @Mutation
+  public playerSuccess(players: Player[]): void {
+    this.players = players;
+  }
+  @Mutation
+  public loadingPlayer(status: boolean) {
+    this.loadingPlayerStatus = status;
+  }
    
 
 

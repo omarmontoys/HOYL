@@ -2,6 +2,7 @@ query Players{
      players{
         id
         username
+        age
         answers{
             id
             question

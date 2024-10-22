@@ -38,7 +38,7 @@ export type PlayerQuery = { __typename?: 'Query', player: { __typename?: 'Player
 export type PlayersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PlayersQuery = { __typename?: 'Query', players: Array<{ __typename?: 'Player', id: string, username: string, answers: Array<{ __typename?: 'Answer', id: string, question: number, answer: number, playerId: string }> }> };
+export type PlayersQuery = { __typename?: 'Query', players: Array<{ __typename?: 'Player', id: string, username: string, age: number, answers: Array<{ __typename?: 'Answer', id: string, question: number, answer: number, playerId: string }> }> };
 
 export type UserQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -115,6 +115,7 @@ export const Players = gql`
   players {
     id
     username
+    age
     answers {
       id
       question
