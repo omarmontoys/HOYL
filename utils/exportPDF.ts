@@ -10,7 +10,7 @@ export function exportPDF(players: any[], startDate: string | null, endDate: str
   const formattedDate = today.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
 
   img.onload = () => {
-    doc.addImage(img, "PNG", 85, 10, 130, 35);
+    doc.addImage(img, "PNG", 85, 2, 130, 60);
     doc.setFontSize(12);
     doc.text(`Fecha: ${formattedDate}`, 16, 40);
     doc.text("Usuario(s) seleccionados: Todos", 16, 50);
