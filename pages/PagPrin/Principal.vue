@@ -11,23 +11,22 @@
           <v-card-text>
             <v-row justify="space-between" class="mb-4">
               <v-col cols="12" md="6" sm="6" class="d-flex">
-                <v-menu v-model="menu1" :close-on-content-click="false" transition="scale-transition" offset-y
+                <!-- <v-menu v-model="menu1" :close-on-content-click="false" transition="scale-transition" offset-y
                   min-width="auto">
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field v-model="startDate" label="Fecha de inicio" prepend-icon="mdi-calendar" clearable
                       @click:clear="startDate = null" readonly v-bind="attrs" v-on="on" dense></v-text-field>
                   </template>
-                  <v-date-picker v-model="startDate" no-title scrollable @input="menu1 = false"></v-date-picker>
-                </v-menu>
+<v-date-picker v-model="startDate" no-title scrollable @input="menu1 = false"></v-date-picker>
+</v-menu>
 
-                <v-menu v-model="menu2" :close-on-content-click="false" transition="scale-transition" offset-y
-                  min-width="auto">
-                  <template v-slot:activator="{ on, attrs }">
+<v-menu v-model="menu2" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+  <template v-slot:activator="{ on, attrs }">
                     <v-text-field v-model="endDate" label="Fecha de fin" prepend-icon="mdi-calendar" clearable
                       @click:clear="endDate = null" readonly v-bind="attrs" v-on="on" dense></v-text-field>
                   </template>
-                  <v-date-picker v-model="endDate" no-title scrollable @input="menu2 = false"></v-date-picker>
-                </v-menu>
+  <v-date-picker v-model="endDate" no-title scrollable @input="menu2 = false"></v-date-picker>
+</v-menu>-->
               </v-col>
               <v-col cols="12" md="4" sm="6" class="d-flex justify-end">
                 <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar por nombre" single-line
@@ -107,8 +106,8 @@ export default class Principal extends Vue {
 
   public headers = [
     { text: "Nombre", value: "username" },
-    { text: "Partida", value: "calories" },
-    { text: "Fecha de Creacion", value: "fat" },
+    { text: "Edad", value: "age" },
+    { text: "Genero", value: "appearance" },
     { text: "Select", value: "checkbox" },
   ];
 

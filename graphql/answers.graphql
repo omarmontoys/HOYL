@@ -3,6 +3,6 @@ query Answers{
     id
     question
     answer
-    playerId
+    playerUsername
   }
 }

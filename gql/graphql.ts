@@ -9,12 +9,12 @@ export type AnswerQueryVariables = Exact<{
 }>;
 
 
-export type AnswerQuery = { __typename?: 'Query', answer: { __typename?: 'Answer', id: string, question: number, answer: number, playerId: string } };
+export type AnswerQuery = { __typename?: 'Query', answer: { __typename?: 'Answer', id: string, question: number, answer: number, playerUsername: string } };
 
 export type AnswersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AnswersQuery = { __typename?: 'Query', answers: Array<{ __typename?: 'Answer', id: string, question: number, answer: number, playerId: string }> };
+export type AnswersQuery = { __typename?: 'Query', answers: Array<{ __typename?: 'Answer', id: string, question: number, answer: number, playerUsername: string }> };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -29,16 +29,16 @@ export type DeleteUserMutationVariables = Exact<{
 export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string } };
 
 export type PlayerQueryVariables = Exact<{
-  id: Scalars['ID'];
+  username: Scalars['String'];
 }>;
 
 
-export type PlayerQuery = { __typename?: 'Query', player: { __typename?: 'Player', id: string, name: string, age: number, username: string, appearance: Appearance, answers: Array<{ __typename?: 'Answer', id: string, question: number, answer: number, playerId: string }> } };
+export type PlayerQuery = { __typename?: 'Query', player: { __typename?: 'Player', id: string, name: string, age: number, username: string, appearance: Appearance, answers: Array<{ __typename?: 'Answer', id: string, question: number, answer: number, playerUsername: string }> } };
 
 export type PlayersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PlayersQuery = { __typename?: 'Query', players: Array<{ __typename?: 'Player', id: string, username: string, age: number, answers: Array<{ __typename?: 'Answer', id: string, question: number, answer: number, playerId: string }> }> };
+export type PlayersQuery = { __typename?: 'Query', players: Array<{ __typename?: 'Player', id: string, username: string, age: number, appearance: Appearance, answers: Array<{ __typename?: 'Answer', id: string, question: number, answer: number, playerUsername: string }> }> };
 
 export type UserQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -59,7 +59,7 @@ export const Answer = gql`
     id
     question
     answer
-    playerId
+    playerUsername
   }
 }
     `;
@@ -69,7 +69,7 @@ export const Answers = gql`
     id
     question
     answer
-    playerId
+    playerUsername
   }
 }
     `;
@@ -94,8 +94,8 @@ export const DeleteUser = gql`
 }
     `;
 export const Player = gql`
-    query Player($id: ID!) {
-  player(id: $id) {
+    query Player($username: String!) {
+  player(username: $username) {
     id
     name
     age
@@ -105,7 +105,7 @@ export const Player = gql`
       id
       question
       answer
-      playerId
+      playerUsername
     }
   }
 }
@@ -116,11 +116,12 @@ export const Players = gql`
     id
     username
     age
+    appearance
     answers {
       id
       question
       answer
-      playerId
+      playerUsername
     }
   }
 }
@@ -162,8 +163,8 @@ export type Answer = {
   answer: Scalars['Int'];
   /** Id de la respuesta. */
   id: Scalars['ID'];
-  /** Id del jugador. */
-  playerId: Scalars['ID'];
+  /** Username del jugador. */
+  playerUsername: Scalars['String'];
   /** Número de la pregunta. */
   question: Scalars['Int'];
 };
@@ -178,8 +179,8 @@ export enum Appearance {
 export type CreateAnswerInput = {
   /** Respuesta de la pregunta. */
   answer: Scalars['Int'];
-  /** Id del jugador. */
-  playerId: Scalars['ID'];
+  /** Username del jugador. */
+  playerUsername: Scalars['String'];
   /** Número de pregunta. */
   question: Scalars['Int'];
 };
@@ -285,7 +286,7 @@ export type QueryAnswerArgs = {
 
 
 export type QueryPlayerArgs = {
-  id: Scalars['ID'];
+  username: Scalars['String'];
 };
 
 

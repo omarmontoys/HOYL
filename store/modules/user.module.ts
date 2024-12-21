@@ -23,9 +23,9 @@ class UserModule extends VuexModule {
     public loadingPlayerStatus = false;
 
     @Action
-    async getPlayer(playerId: string) {
+    async getPlayer(userName: string) {
         this.context.commit("loadingPlayer", true);
-        return await UserService.getplayer(playerId)
+        return await UserService.getplayer(userName)
             .then((data) => {
                 console.log(data);
                 this.context.commit("playerSuccess", data);
@@ -69,10 +69,10 @@ class UserModule extends VuexModule {
   }
 
     @Action({ rawError: true })
-    async deletePlayer(playerId: string): Promise<void> {
+    async deletePlayer(userName: string): Promise<void> {
         this.context.commit("setLoadingDelete", true);
         this.context.commit("setSuccessDelete", false);
-        return await UserService.deleteUser(playerId)
+        return await UserService.deleteUser(userName)
             .then((data) => {
                 console.log("Llego");
                 console.log(data);

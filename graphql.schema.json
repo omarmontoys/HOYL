@@ -47,15 +47,15 @@
             "deprecationReason": null
           },
           {
-            "name": "playerId",
-            "description": "Id del jugador.",
+            "name": "playerUsername",
+            "description": "Username del jugador.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "ID",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -143,14 +143,14 @@
             "deprecationReason": null
           },
           {
-            "name": "playerId",
-            "description": "Id del jugador.",
+            "name": "playerUsername",
+            "description": "Username del jugador.",
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "ID",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -741,14 +741,14 @@
             "description": "Query para obtener un jugador.",
             "args": [
               {
-                "name": "id",
+                "name": "username",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
                   "ofType": {
                     "kind": "SCALAR",
-                    "name": "ID",
+                    "name": "String",
                     "ofType": null
                   }
                 },

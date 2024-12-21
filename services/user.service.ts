@@ -16,13 +16,13 @@ class UserService {
       })
     ).data.players;
   }
-  async getplayer(playerId: string) {
+  async getplayer(userName: string) {
     return (
       await apolloClient.query({
         query: Player,
         fetchPolicy: "network-only",
         variables: {
-          id : playerId
+          username: userName
         }
       })
     ).data.player;
@@ -35,13 +35,13 @@ class UserService {
       })
     ).data.answers;
   }
-  async deleteUser(playerId: string): Promise<Player> {
-    console.log("mutacion " + playerId);
+  async deleteUser(userName: string): Promise<Player> {
+    console.log("mutacion " + userName);
     return (
       await apolloClient.mutate({
         mutation: DeleteUser,
         variables: {
-          id: playerId,
+          userName: userName,
         },
       })
     ).data?.deleteuser;

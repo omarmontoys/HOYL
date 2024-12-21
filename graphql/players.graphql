@@ -3,11 +3,12 @@ query Players{
         id
         username
         age
+        appearance
         answers{
             id
             question
             answer
-            playerId
+            playerUsername
         }
     }
 }

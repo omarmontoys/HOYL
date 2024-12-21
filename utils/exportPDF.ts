@@ -13,8 +13,8 @@ export function exportPDF(players: any[], startDate: string | null, endDate: str
     doc.addImage(img, "PNG", 85, 2, 130, 60);
     doc.setFontSize(12);
     doc.text(`Fecha: ${formattedDate}`, 16, 40);
-    doc.text("Usuario(s) seleccionados: Todos", 16, 50);
-    doc.text(`Fecha: ${startDate || "N/A"} ---- ${endDate || "N/A"}`, 16, 45);
+    //doc.text("Usuario(s) seleccionados: Todos", 16, 50);
+    //doc.text(`Fecha: ${startDate || "N/A"} ---- ${endDate || "N/A"}`, 16, 45);
 
     const headers = [["Usuario", "Edad", ...Array.from({ length: 27 }, (_, i) => `P ${i + 1}`), "Total"]];
     const rows = players.map((player) => {

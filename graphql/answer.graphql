@@ -4,6 +4,6 @@ query Answer($id: ID!)
     id
     question
     answer
-    playerId
+    playerUsername
   }
 }
