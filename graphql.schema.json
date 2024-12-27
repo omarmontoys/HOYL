@@ -109,6 +109,50 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "Auth",
+        "description": "Resultado de autorización del usuario.",
+        "isOneOf": null,
+        "fields": [
+          {
+            "name": "token",
+            "description": "Identificador del token.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tokenType",
+            "description": "Tipo de token.",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "SCALAR",
         "name": "Boolean",
         "description": "The `Boolean` scalar type represents `true` or `false`.",
@@ -365,6 +409,50 @@
         "possibleTypes": null
       },
       {
+        "kind": "INPUT_OBJECT",
+        "name": "LoginInput",
+        "description": null,
+        "isOneOf": false,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "email",
+            "description": "Correo electrónico del usuario.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "password",
+            "description": "Contraseña del usuario.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "Mutation",
         "description": null,
@@ -372,7 +460,7 @@
         "fields": [
           {
             "name": "deleteUser",
-            "description": "Mutación para elminar un usuario",
+            "description": "Mutación para eliminar un usuario",
             "args": [
               {
                 "name": "delete",
@@ -397,6 +485,39 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "User",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "login",
+            "description": "Mutación para login.",
+            "args": [
+              {
+                "name": "input",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "LoginInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Auth",
                 "ofType": null
               }
             },
@@ -438,7 +559,7 @@
           },
           {
             "name": "registerUser",
-            "description": "Mutación para crear un nuevo ususario.",
+            "description": "Mutación para crear un nuevo usuario.",
             "args": [
               {
                 "name": "create",
@@ -722,7 +843,7 @@
           },
           {
             "name": "currentUser",
-            "description": null,
+            "description": "Query para obtener el usuario actualmente loggeado.",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -795,7 +916,7 @@
           },
           {
             "name": "user",
-            "description": null,
+            "description": "Query para obtener un usuario.",
             "args": [
               {
                 "name": "id",
@@ -828,7 +949,7 @@
           },
           {
             "name": "users",
-            "description": null,
+            "description": "Query para obtener todos los usuarios.",
             "args": [],
             "type": {
               "kind": "NON_NULL",

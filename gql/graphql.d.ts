@@ -35,6 +35,15 @@ declare module '*/deleteUser.graphql' {
 }
     
 
+declare module '*/login.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const Login: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
 declare module '*/player.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;

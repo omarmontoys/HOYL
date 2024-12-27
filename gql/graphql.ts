@@ -28,6 +28,13 @@ export type DeleteUserMutationVariables = Exact<{
 
 export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string } };
 
+export type LoginMutationVariables = Exact<{
+  input: LoginInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Auth', token: string, tokenType: string } };
+
 export type PlayerQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
@@ -90,6 +97,14 @@ export const DeleteUser = gql`
     names
     lastNames
     email
+  }
+}
+    `;
+export const Login = gql`
+    mutation Login($input: LoginInput!) {
+  login(input: $input) {
+    token
+    tokenType
   }
 }
     `;
@@ -175,6 +190,15 @@ export enum Appearance {
   Male = 'MALE'
 }
 
+/** Resultado de autorización del usuario. */
+export type Auth = {
+  __typename?: 'Auth';
+  /** Identificador del token. */
+  token: Scalars['String'];
+  /** Tipo de token. */
+  tokenType: Scalars['String'];
+};
+
 /** Inputs para registrar una respuesta. */
 export type CreateAnswerInput = {
   /** Respuesta de la pregunta. */
@@ -209,13 +233,22 @@ export type CreateUserInput = {
   password: Scalars['String'];
 };
 
+export type LoginInput = {
+  /** Correo electrónico del usuario. */
+  email: Scalars['String'];
+  /** Contraseña del usuario. */
+  password: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Mutación para elminar un usuario */
+  /** Mutación para eliminar un usuario */
   deleteUser: User;
+  /** Mutación para login. */
+  login: Auth;
   /** Mutación para registrar un jugador. */
   registerPlayer: Player;
-  /** Mutación para crear un nuevo ususario. */
+  /** Mutación para crear un nuevo usuario. */
   registerUser: User;
   /** Mutación para registrar una respuesta. */
   saveAnswer: Answer;
@@ -226,6 +259,11 @@ export type Mutation = {
 
 export type MutationDeleteUserArgs = {
   delete: Scalars['ID'];
+};
+
+
+export type MutationLoginArgs = {
+  input: LoginInput;
 };
 
 
@@ -270,12 +308,15 @@ export type Query = {
   answer: Answer;
   /** Query para obtener todas las respuestas. */
   answers: Array<Answer>;
+  /** Query para obtener el usuario actualmente loggeado. */
   currentUser: User;
   /** Query para obtener un jugador. */
   player: Player;
   /** Query para obtener todos los jugadores. */
   players: Array<Player>;
+  /** Query para obtener un usuario. */
   user: User;
+  /** Query para obtener todos los usuarios. */
   users: Array<User>;
 };
 

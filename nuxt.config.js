@@ -29,7 +29,7 @@ export default {
   plugins: [],
 
   // Auto import components
-  components: true,
+  components: false,
 
   // Modules for dev and build (recommended)
   buildModules: [
@@ -38,7 +38,8 @@ export default {
   ],
 
   // Modules
-  modules: [],
+  modules: ["cookie-universal-nuxt"],
+
 
   // Vuetify module configuration
   vuetify: {
