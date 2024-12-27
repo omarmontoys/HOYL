@@ -38,7 +38,7 @@ class AuthModule extends VuexModule {
   public removeCookies() {
     console.log("sesion cerrada");
     window.$nuxt.$cookies.remove("token");
-    window.$nuxt.$router.push("/");
+    window.location.reload()
   }
 
   @Action({ rawError: true })

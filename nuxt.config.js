@@ -40,6 +40,10 @@ export default {
   // Modules
   modules: ["cookie-universal-nuxt"],
 
+  router: {
+    middleware: ['user'],
+  },
+
 
   // Vuetify module configuration
   vuetify: {

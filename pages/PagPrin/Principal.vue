@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { namespace } from "vuex-class/lib/bindings";
+import { namespace } from "vuex-class";
 import { Player } from "~/gql/graphql";
 import { exportPDF } from "~/utils/exportPDF";
 import { exportCSV } from "~/utils/exportCSV";
