@@ -18,9 +18,9 @@ class AuthModule extends VuexModule {
 
   @Mutation
   public loginFaile(error: any) {
-    if (error.message === "Tus datos son incorrectos") {
-      this.errorMessage = "Tus datos son incorrectos";
-    } else if (error.message === "No Used found") {
+    if (error.message === "Datos de acceso incorrectos.") {
+      this.errorMessage = "Credenciales incorrectas";
+    } else if (error.message === "No User found") {
       this.errorMessage = "Usuario no encontrado";
     } else if (error.message === "Argument Validation Error") {
       this.errorMessage = "Argumentos Invalidos";
