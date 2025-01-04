@@ -3,7 +3,6 @@ import Vue from "vue";
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import {
     Answers,
-    DeleteUser,
     Player,
     Players,
     User,
@@ -36,54 +35,66 @@ class UserModule extends VuexModule {
             });
     }
     @Mutation
-  public playerSuccess(players: Player[]): void {
-    this.players = players;
-  }
-  @Mutation
-  public loadingPlayer(status: boolean) {
-    this.loadingPlayerStatus = status;
-  }
-   
-
-
-    @Action
-    async fetchPlayers() {
-        this.context.commit("loadingPlayers", true);
-        return await UserService.getPlayers()
-            .then((players: Player[]) => {
-                console.log(players);
-                this.context.commit("playersSuccess", players);
-                this.context.commit("loadingPlayers", false);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    public playerSuccess(players: Player[]): void {
+        this.players = players;
     }
     @Mutation
-  public playersSuccess(players: Player[]): void {
-    this.players = players;
-  }
-  @Mutation
-  public loadingPlayers(status: boolean) {
-    this.loadingPlayersStatus = status;
-  }
+    public loadingPlayer(status: boolean) {
+        this.loadingPlayerStatus = status;
+    }
+    @Action
+async fetchPlayers() {
+  this.context.commit("loadingPlayers", true);
+  
+  // Primera llamada para obtener los jugadores
+  await UserService.getPlayers()
+    .then((players: Player[]) => {
+      console.log(players);
+      this.context.commit("playersSuccess", players);
+      this.context.commit("loadingPlayers", false);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  // Configura un intervalo para consultar nuevamente cada 5 segundos (o el tiempo que necesites)
+  setInterval(async () => {
+    await UserService.getPlayers()
+      .then((players: Player[]) => {
+        console.log(players);
+        this.context.commit("playersSuccess", players);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, 1000); // Reemplaza 5000 por el tiempo que necesites (en milisegundos)
+}
+    @Mutation
+    public playersSuccess(players: Player[]): void {
+        this.players = players;
+    }
+    @Mutation
+    public loadingPlayers(status: boolean) {
+        this.loadingPlayersStatus = status;
+    }
 
     @Action({ rawError: true })
-    async deletePlayer(userName: string): Promise<void> {
-        this.context.commit("setLoadingDelete", true);
-        this.context.commit("setSuccessDelete", false);
-        return await UserService.deleteUser(userName)
-            .then((data) => {
-                console.log("Llego");
-                console.log(data);
-                this.context.commit("setDelete", data);
-                this.context.commit("setLoadingDelete", false);
-                this.context.commit("setSuccessDelete", false);
-            })
-            .catch((error) => {
-                this.context.commit("setLoadingDelete", false);
-                console.log(error);
-            });
+    async deletePlayer(username: string[]): Promise<void> {
+       
+    this.context.commit("setLoadingDelete", true);
+    this.context.commit("setSuccessDelete", false);
+    return await UserService.deleteUsers(username)
+        .then((data) => {
+            console.log("Llego");
+            console.log(data);
+            this.context.commit("setDelete", data);
+            this.context.commit("setLoadingDelete", false);
+            this.context.commit("setSuccessDelete", false); 
+        })
+        .catch((error) => {
+            this.context.commit("setLoadingDelete", false);
+            console.log(error);
+        });
     }
     @Mutation
     public setLoadingDelete(status: boolean) {
@@ -92,6 +103,19 @@ class UserModule extends VuexModule {
     @Mutation
     public setSuccessDelete(status: boolean) {
         this.successdelete = status;
+    }
+    
+    @Mutation
+    public setDelete(data: { username: string[] }) {
+        console.log("Llego setDelete");
+        window.location.reload()
+    if (this.players) {
+        this.players = this.players.filter(
+            (player) => !data.username.includes(player.username)
+        );
+        window.location.reload()
+        }
+        
     }
 
 }

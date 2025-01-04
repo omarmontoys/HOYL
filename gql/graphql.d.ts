@@ -26,10 +26,10 @@ declare module '*/currentUser.graphql' {
 }
     
 
-declare module '*/deleteUser.graphql' {
+declare module '*/deleteManyPlayerAndAnswers.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
-  export const DeleteUser: DocumentNode;
+  export const DeleteManyPlayerAndAnswers: DocumentNode;
 
   export default defaultDocument;
 }

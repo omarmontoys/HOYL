@@ -1,10 +1,9 @@
 import { apolloClient } from "@/provider/apolloprovider";
 import {
     Answers,
-    DeleteUser,
     Player,
     Players,
-    User,
+    DeleteManyPlayerAndAnswers,
 } from "~/gql/graphql";
 
 class UserService {
@@ -35,17 +34,22 @@ class UserService {
       })
     ).data.answers;
   }
-  async deleteUser(userName: string): Promise<Player> {
-    console.log("mutacion " + userName);
-    return (
-      await apolloClient.mutate({
-        mutation: DeleteUser,
-        variables: {
-          userName: userName,
-        },
-      })
-    ).data?.deleteuser;
+   async deleteUsers(usernames: string | string[]): Promise<boolean> {
+  const usernamesArray = Array.isArray(usernames) ? usernames : [usernames];
+  console.log("Mutación:", usernamesArray);
+  
+  try {
+    const response = await apolloClient.mutate({
+      mutation: DeleteManyPlayerAndAnswers,
+      variables: { usernames: usernamesArray },
+    });
+    console.log("Respuesta del servidor:", response);
+    return true;
+  } catch (error) {
+    console.error("Error en la mutación:", error);
+    return false;
   }
 }
 
+}
 export default new UserService();

@@ -21,12 +21,12 @@ export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string } };
 
-export type DeleteUserMutationVariables = Exact<{
-  id: Scalars['ID'];
+export type DeleteManyPlayerAndAnswersMutationVariables = Exact<{
+  usernames: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
-export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', id: string, names: string, lastNames: string, email: string } };
+export type DeleteManyPlayerAndAnswersMutation = { __typename?: 'Mutation', deleteManyPlayerAndAnswers: Array<{ __typename?: 'Player', appearance: Appearance, id: string, username: string, name: string, age: number }> };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -90,13 +90,14 @@ export const CurrentUser = gql`
   }
 }
     `;
-export const DeleteUser = gql`
-    mutation DeleteUser($id: ID!) {
-  deleteUser(delete: $id) {
+export const DeleteManyPlayerAndAnswers = gql`
+    mutation DeleteManyPlayerAndAnswers($usernames: [String!]!) {
+  deleteManyPlayerAndAnswers(usernames: $usernames) {
+    appearance
     id
-    names
-    lastNames
-    email
+    username
+    name
+    age
   }
 }
     `;
@@ -242,6 +243,8 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Mutación para elminar uno o más jugadores, y sus respuestas relacionadas. */
+  deleteManyPlayerAndAnswers: Array<Player>;
   /** Mutación para eliminar un usuario */
   deleteUser: User;
   /** Mutación para login. */
@@ -254,6 +257,11 @@ export type Mutation = {
   saveAnswer: Answer;
   /** Mutación para actualizar un usuario */
   updateUser: User;
+};
+
+
+export type MutationDeleteManyPlayerAndAnswersArgs = {
+  usernames: Array<Scalars['String']>;
 };
 
 

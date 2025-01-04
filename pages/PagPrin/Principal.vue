@@ -36,7 +36,7 @@
             <v-data-table :headers="headers" :items="filteredPlayers" item-value="username" v-model="selectedItems"
               item-key="id">
               <template v-slot:header.checkbox>
-                <v-checkbox :input-value="allSelected" @click="toggleSelectAll" class="minecraft-font"
+                <v-checkbox :value="allSelected" @click="toggleSelectAll" class="minecraft-font"
                   @change="logSelectedIds"></v-checkbox>
               </template>
               <template v-slot:item.checkbox="{ item }">
@@ -90,6 +90,7 @@ const UserModule = namespace("UserModule");
 export default class Principal extends Vue {
   public selectedItems: any[] = [];
   public selectedIds: string[] = [];
+  public selectednames: string[] = [];
   public search: string = "";
   public startDate: string | null = null;
   public endDate: string | null = null;
@@ -103,6 +104,9 @@ export default class Principal extends Vue {
   fetchPlayers!: () => Promise<void>;
   @UserModule.Action
   getPlayer!: (id: string) => Promise<void>;
+  @UserModule.Action
+  deletePlayer!: (username: string[]) => Promise<void>;
+
 
   public headers = [
     { text: "Nombre", value: "username" },
@@ -126,18 +130,26 @@ export default class Principal extends Vue {
   get allSelected() {
     return this.selectedItems.length === this.filteredPlayers.length && this.selectedItems.length > 0;
   }
-
-  toggleSelectAll() {
-    if (this.allSelected) {
-      this.selectedItems = [];
-    } else {
-      this.selectedItems = [...this.filteredPlayers]; // Selecciona todos los elementos filtrados
-    }
-  }
-
   async logSelectedIds() {
     this.selectedIds = this.selectedItems.map((item) => item.id);
+    this.selectednames = this.selectedItems.map((item) => item.username);
     console.log("IDs seleccionados:", this.selectedIds);
+    console.log("names seleccionados:", this.selectednames);
+  }
+  toggleSelectAll() {
+    if (this.allSelected) {
+      // Deseleccionar todos los elementos
+      this.selectedItems = [];
+      this.selectednames = [];
+      this.selectedIds = [];
+    } else {
+      // Seleccionar todos los elementos filtrados
+      this.selectedItems = [...this.filteredPlayers];
+      this.selectednames = this.selectedItems.map((item) => item.username);
+      this.selectedIds = this.selectedItems.map((item) => item.id);
+    }
+    console.log("IDs seleccionados:", this.selectedIds);
+    console.log("names seleccionados:", this.selectednames);
   }
 
 
@@ -150,13 +162,14 @@ export default class Principal extends Vue {
     exportCSV(this.selectedItems);
   }
 
-  deleteSelected() {
-    this.players = this.players.filter(player => !this.selectedItems.includes(player));
-    this.selectedItems = [];
+  async deleteSelected() {
+    await this.deletePlayer(this.selectednames);
   }
+
 
   async mounted() {
     await this.fetchPlayers();
+
   }
 }
 </script>
