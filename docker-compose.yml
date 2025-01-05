@@ -8,9 +8,10 @@ services:
     container_name: vue-app
     restart: always
     ports:
-      - "8080:8080"
+      - "3000:3000"
     networks:
       - vue-network
+
 networks:
   vue-network:
     driver: bridge

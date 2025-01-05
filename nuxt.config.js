@@ -2,6 +2,10 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Global page headers
+  server: {
+    host: '0.0.0.0', // Escucha en todas las interfaces
+    port: 3000,      // Asegúrate de que coincida con el puerto
+  },
   head: {
     titleTemplate: '%s - HOYL',
     title: 'HOYL',

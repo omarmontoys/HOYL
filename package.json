@@ -4,12 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
-    "codegen": "graphql-codegen --config codegen.ts"
-  },
+  "dev": "nuxt",
+  "build": "nuxt build",
+   "start": "node --no-deprecation node_modules/nuxt/bin/nuxt.js",
+  "generate": "nuxt generate",
+  "codegen": "graphql-codegen --config codegen.ts"
+},
   "dependencies": {
     "@apollo/client": "^3.7.10",
     "@graphql-codegen/typescript-document-nodes": "^3.0.2",
